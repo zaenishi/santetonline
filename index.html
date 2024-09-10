@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Santet online, hati hati saat memakai website ini, bisa menyebabkan fatal jika disalahgunakan.">
+    <meta name="keywords" content="santet, santetonline, santet online, dukun, mistik, witch, zaenishi, sijamur">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="zaenishi">
+    <title>Santet Online: santet orang yang anda benci 👹</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Roboto:wght@400;700&family=MedievalSharp&display=swap');
+
+        :root {
+            --primary-color: #0a0014;
+            --secondary-color: #8a0303;
+            --accent-color: #ffd700;
+            --text-color: #e0e0e0;
+            --curse-color: #ff4500;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEsrpaN7SetjvhJ4Yt-MqjPPbTYeiJvulbcDyxD85Z1PDu5gZRbzV_t51u&s=10');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 0, 20, 0.8);
+            z-index: 1;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 2rem;
+            background: rgba(138, 3, 3, 0.2);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            backdrop-filter: blur(10px);
+            max-width: 90%;
+            width: 500px;
+            transition: all 0.5s ease;
+        }
+
+        h1 {
+            font-family: 'MedievalSharp', cursive;
+            color: var(--accent-color);
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 10px var(--accent-color);
+        }
+
+        #targetName {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            font-size: 1.2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        #targetName:focus {
+            outline: none;
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+
+        #startSantet {
+            background-color: var(--secondary-color);
+            color: var(--accent-color);
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #startSantet:hover {
+            background-color: #a00404;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+            transform: scale(1.05);
+        }
+
+        #result {
+            margin-top: 2rem;
+            font-size: 1.2rem;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .santet-circle {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border: 2px solid var(--accent-color);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            transition: all 1s ease;
+        }
+
+        .santet-circle::before, .santet-circle::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--accent-color);
+        }
+
+        .santet-circle::before {
+            width: 90%;
+            height: 90%;
+            border-radius: 50%;
+            opacity: 0.1;
+        }
+
+        .santet-circle::after {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            box-shadow: 0 0 20px 5px var(--accent-color);
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .loading .santet-circle {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            animation: pulse 2s infinite;
+        }
+
+        #santetForm.loading {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            opacity: 0.5;
+        }
+
+        .curse-symbol {
+            position: absolute;
+            font-size: 2rem;
+            color: var(--curse-color);
+            opacity: 0;
+            z-index: 3;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                width: 90%;
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            #targetName, #startSantet {
+                font-size: 1rem;
+            }
+            
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .content {
+                padding: 1rem;
+            }
+        }
+
+        .shake {
+            animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+            transform: translate3d(0, 0, 0);
+            backface-visibility: hidden;
+            perspective: 1000px;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+
+        .santet-progress {
+            width: 0%;
+            height: 5px;
+            background-color: var(--curse-color);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            transition: width 5s linear;
+        }
+
+        #powerMeter {
+            width: 100%;
+            height: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+
+        #powerLevel {
+            width: 0%;
+            height: 100%;
+            background-color: var(--curse-color);
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="overlay"></div>
+        <div class="particles"></div>
+        <div class="content">
+            <h1 class="judul">Santet Online</h1>
+            <form id="santetForm">
+                <input type="text" id="targetName" placeholder="Masukkan nama target" required>
+                <button type="submit" id="startSantet">Mulai Nyantet</button>
+                <div id="powerMeter"><div id="powerLevel"></div></div>
+            </form>
+            <div id="result"></div>
+            <div class="santet-progress"></div>
+        </div>
+    </div>
+    <div class="santet-circle"></div>
+    <footer style="position: absolute; bottom: 10px; width: 100%; text-align: center; color: var(--accent-color); font-family: 'Cinzel', serif;">
+        <p class="footer">Created by <strong>Zaenishi 🍄</strong></p>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+    <script>
+        const santetForm = document.getElementById('santetForm');
+        const resultDiv = document.getElementById('result');
+        const santetCircle = document.querySelector('.santet-circle');
+        const particlesContainer = document.querySelector('.particles');
+        const container = document.querySelector('.container');
+        const content = document.querySelector('.content');
+        const santetProgress = document.querySelector('.santet-progress');
+        const powerLevel = document.getElementById('powerLevel');
+
+        const santetEffects = [
+            'Muntah darah di sore hari sampai malam hari',
+            'Muntah paku berdarah pada malam hari',
+            'Muntah kalajengking pada malam hari',
+            'Perut membuncit terasa nyeri yang menyakitkan',
+            'Tidak akan mendapatkan rezeki apapun',
+            'Setiap hari akan mengalami kesialan',
+            'Terlihat jelek dimata orang lain',
+            'Warung/bisnis tidak terlihat/tertutup dimata orang lain',
+            'Tenggorokan terasa tertusuk jarum terus menerus, hingga muntah darah',
+            'Badan terasa nyeri/terasa pegal diduduki oleh makhluk halus',
+            'Kaki akan lumpuh/berat saat melangkah',
+        ];
+
+        const curseSymbols = ['☠', '⚰', '🕷', '🦇', '🔮', '📿', '🕯', '🧿', '🪶', '🗡'];
+
+        const backgroundSound = new Howl({
+            src: ['https://assets.mixkit.co/sfx/preview/mixkit-haunted-slow-ambient-wind-2008.mp3'],
+            loop: true,
+            volume: 0.5
+        });
+
+        const santetSound = new Howl({
+            src: ['https://assets.mixkit.co/sfx/preview/mixkit-magic-wand-sparkle-3062.mp3'],
+            volume: 0.7
+        });
+
+        function createParticles() {
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.width = `${Math.random() * 5 + 1}px`;
+                particle.style.height = particle.style.width;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particlesContainer.appendChild(particle);
+
+                gsap.to(particle, {
+                    x: `random(-100, 100)`,
+                    y: `random(-100, 100)`,
+                    opacity: 0,
+                    duration: `random(3, 5)`,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "power1.inOut"
+                });
+            }
+        }
+
+        function createCurseSymbol() {
+            const symbol = document.createElement('div');
+            symbol.classList.add('curse-symbol');
+            symbol.textContent = curseSymbols[Math.floor(Math.random() * curseSymbols.length)];
+            symbol.style.left = `${Math.random() * 100}%`;
+            symbol.style.top = `${Math.random() * 100}%`;
+            container.appendChild(symbol);
+
+            gsap.to(symbol, {
+                opacity: 1,
+                duration: 0.5,
+                y: -50,
+                ease: "power1.out",
+                onComplete: () => {
+                    gsap.to(symbol, {
+                        opacity: 0,
+                        duration: 0.5,
+                        delay: 1,
+                        onComplete: () => {
+                            symbol.remove();
+                        }
+                    });
+                }
+            });
+        }
+
+        createParticles();
+
+        santetForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const targetName = document.getElementById('targetName').value;
+            
+            if (!targetName) {
+                alert('Mohon masukkan nama target');
+                return;
+            }
+
+            backgroundSound.play();
+            santetForm.classList.add('loading');
+            resultDiv.style.opacity = '0';
+            santetCircle.style.opacity = '1';
+            content.classList.add('shake');
+
+            gsap.to(santetCircle, {
+                scale: 1,
+                opacity: 1,
+                duration: 1,
+                ease: "power2.out"
+            });
+
+            santetProgress.style.width = '100%';
+
+            let curseInterval = setInterval(createCurseSymbol, 300);
+
+            let power = 0;
+            let powerInterval = setInterval(() => {
+                power += Math.random() * 5;
+                powerLevel.style.width = `${Math.min(power, 100)}%`;
+                if (power >= 100) {
+                    clearInterval(powerInterval);
+                }
+            }, 100);
+
+            setTimeout(() => {
+                clearInterval(curseInterval);
+                santetSound.play();
+                const randomEffect = santetEffects[Math.floor(Math.random() * santetEffects.length)];
+
+                resultDiv.innerHTML = `
+                    <p>Santet untuk <strong>${targetName}</strong> telah dikirim!</p>
+                    <p>Efek: <strong>${randomEffect}</strong></p>
+                `;
+
+                santetForm.classList.remove('loading');
+                resultDiv.style.opacity = '1';
+                content.classList.remove('shake');
+                santetProgress.style.width = '0%';
+
+                gsap.to(santetCircle, {
+                    scale: 0,
+                    opacity: 0,
+                    duration: 1,
+                    ease: "power2.in"
+                });
+
+                setTimeout(() => {
+                    backgroundSound.fade(0.5, 0, 5000);
+                }, 5000);
+            }, 5000);
+        });
+
+        // Responsive design
+        function adjustStyles() {
+            if (window.innerWidth <= 768) {
+                content.style.width = '90%';
+            } else {
+                content.style.width = '500px';
+            }
+        }
+
+        window.addEventListener('resize', adjustStyles);
+        adjustStyles();
+    </script>
+</body>
+</html>
